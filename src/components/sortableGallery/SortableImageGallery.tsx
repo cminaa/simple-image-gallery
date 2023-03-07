@@ -3,11 +3,12 @@ import { useEffect, useState } from "react";
 import { dummyData, GalleryItem } from "../../mock-data";
 import { FaList, FaTh } from "react-icons/fa";
 import Sort, { SortOption } from "../SortComponent";
-import Toggle from "../ToggleComponent";
 import Gallery from "../gallery/Gallery";
+import ToggleButtonGroup from "../ToggleButtonGroupComponent";
+import ToggleButton from "../ToggleButtonComponent";
 
 const SortableImageGallery: React.FunctionComponent = () => {
-  const [isGrid, setIsGrid] = useState(true);
+  const [layout, setLayout] = useState("grid");
   const [sortKey, setSortKey] = useState("name");
   const sortedData = dummyData.sort((a: GalleryItem, b: GalleryItem) => {
     switch (sortKey) {
@@ -48,15 +49,17 @@ const SortableImageGallery: React.FunctionComponent = () => {
   return (
     <div className="flex flex-col m-0 p-6">
       <div className="flex justify-between px-20">
-        <Toggle
-          firstOption={<FaTh />}
-          secondOption={<FaList />}
-          onToggleOptionChange={setIsGrid}
-          isFirstActive={isGrid}
-        />
+        <ToggleButtonGroup value={layout} onToggleOptionChange={setLayout}>
+          <ToggleButton value="grid">
+            <FaTh />
+          </ToggleButton>
+          <ToggleButton value="list">
+            <FaList />
+          </ToggleButton>
+        </ToggleButtonGroup>
         <Sort onSortValueChange={setSortKey} options={sortOptions} />
       </div>
-      <Gallery isGridLayout={isGrid} data={galleryData} />
+      <Gallery isGridLayout={layout === "grid"} data={galleryData} />
     </div>
   );
 };
